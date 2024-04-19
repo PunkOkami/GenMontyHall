@@ -1,9 +1,18 @@
 import random
 import tqdm
+import argparse
 
-tests = 100000000
-doors = [j for j in range(3)]
-switch = True
+parser = argparse.ArgumentParser()
+
+parser.add_argument('-t', '--tests', help='number of tests', type=int, default=100000000)
+parser.add_argument('-s', '--no_switch', help='flag specifing not to switch doors', action='store_false')
+parser.add_argument('-d', '--doors', help='number of doors', type=int, default=3)
+
+args = parser.parse_args()
+
+tests = args.tests
+doors = [j for j in range(args.doors)]
+switch = args.switch
 i = 0
 hits = 0
 pbar = tqdm.tqdm(total=tests)
@@ -25,7 +34,7 @@ while i < tests:
 	
 	if switch:
 		chosen_door = random.choice(doors_copy)
-		
+	
 	if correct_door == chosen_door:
 		hits += 1
 	
