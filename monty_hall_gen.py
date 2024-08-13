@@ -3,7 +3,7 @@ import tqdm
 import argparse
 
 
-def simulation(switch: bool, tests: int, doors: list[int]):
+def monty_hall_sim(switch: bool, tests: int, doors: list[int]):
 	i = 0
 	hits = 0
 	pbar = tqdm.tqdm(total=tests)
@@ -37,7 +37,7 @@ def simulation(switch: bool, tests: int, doors: list[int]):
 	print(f'Percentage of games won: {hits * 100}%')
 
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(prog='GenMontyHall_py', description='Monty hall simulator - Python version')
 
 parser.add_argument('-t', '--tests', help='number of tests', type=int, default=100000000)
 parser.add_argument('-d', '--doors', help='number of doors', type=int, default=3)
@@ -55,7 +55,7 @@ prob = round(prob, 4) * 100
 print(f'{prob}%\n')
 
 print(f'Simulating games with {len(doors)} doors and switching...')
-simulation(switch=True, tests=tests, doors=doors)
+monty_hall_sim(switch=True, tests=tests, doors=doors)
 print()
 
 print(f'Probability of winning with {len(doors)} doors but no switching: ', end='')
@@ -64,5 +64,5 @@ prob = round(prob, 4) * 100
 print(f'{prob}%\n')
 
 print(f'Simulating games with {len(doors)} doors but no switching...')
-simulation(switch=False, tests=tests, doors=doors)
+monty_hall_sim(switch=False, tests=tests, doors=doors)
 
