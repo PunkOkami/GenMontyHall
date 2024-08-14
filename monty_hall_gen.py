@@ -51,7 +51,7 @@ def monty_hall_sim(switch: bool, tests: int, doors: int) -> float:
 
 parser = argparse.ArgumentParser(prog='GenMontyHall_py', description='Monty hall simulator - Python version')
 
-parser.add_argument('-t', '--tests', help='number of tests', type=int, default=100000000)
+parser.add_argument('-t', '--tests', help='number of tests', type=int, default=10000000)
 parser.add_argument('-d', '--doors', help='number of doors', type=int, default=3)
 
 args = parser.parse_args()

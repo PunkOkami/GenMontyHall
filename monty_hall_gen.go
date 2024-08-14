@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/peterbourgon/ff/v4"
+	"github.com/peterbourgon/ff/v4/ffhelp"
 	"github.com/schollz/progressbar/v3"
 	"math/rand"
 	"os"
@@ -73,29 +75,43 @@ func monty_hall_sim(test int, doors int, switching bool) (float32, error) {
 }
 
 func main() {
-	var tests = 10000000
-	var doors = 4
+	flag_set := ff.NewFlagSet("GenMontyHall_go")
+	var (
+		doors = flag_set.Int('d', "doors", 3, "number of doors")
+		tests = flag_set.Int('t', "tests", 10000000, "number of tests")
+		help  = flag_set.Bool('h', "help", "help")
+	)
 
-	var switch_prob = monty_hall_calc(doors, true) * 100
+	err := ff.Parse(flag_set, os.Args[1:])
+	if err != nil {
+		fmt.Println("Paring arguments failed: ", err)
+	}
+
+	if *help {
+		fmt.Printf("%s\n", ffhelp.Flags(flag_set))
+		os.Exit(0)
+	}
+
+	var switch_prob = monty_hall_calc(*doors, true) * 100
 	fmt.Printf("Probability of winning when switching %.2f%%\n", switch_prob)
 
-	var switch_sim, err = monty_hall_sim(tests, doors, true)
+	switch_sim, err := monty_hall_sim(*tests, *doors, true)
 	if err != nil {
 		fmt.Printf("Error happened with progress bar, poor you %v\n", err)
 		os.Exit(1)
 	}
-	switch_sim = switch_sim / float32(tests) * 100
+	switch_sim = switch_sim / float32(*tests) * 100
 	fmt.Printf("Percentage of wins when switching %.2f\n", switch_sim)
 
-	var non_switch_prob = monty_hall_calc(doors, false) * 100
+	var non_switch_prob = monty_hall_calc(*doors, false) * 100
 	fmt.Printf("Probability of winning when not switching %.2f%%\n", non_switch_prob)
 
-	non_switch_sim, err := monty_hall_sim(tests, doors, false)
+	non_switch_sim, err := monty_hall_sim(*tests, *doors, false)
 	if err != nil {
 		fmt.Printf("Error happened with progress bar, poor you %v\n", err)
 		os.Exit(1)
 	}
 
-	non_switch_sim = non_switch_sim / float32(tests) * 100
+	non_switch_sim = non_switch_sim / float32(*tests) * 100
 	fmt.Printf("Percentage of wins when switching %.2f", non_switch_sim)
 }
