@@ -16,7 +16,7 @@ func monty_hall_calc(doors int, switching bool) float32 {
 
 	prob := switching_val
 	prob = prob / (float32(doors - 2))
-	prob = prob + 1.0
+	prob++
 	prob = prob / float32(doors)
 	return prob
 }
@@ -74,7 +74,7 @@ func monty_hall_sim(test int, doors int, switching bool) (float32, error) {
 
 func main() {
 	var tests = 10000000
-	var doors = 3
+	var doors = 4
 
 	var switch_prob = monty_hall_calc(doors, true) * 100
 	fmt.Printf("Probability of winning when switching %.2f%%\n", switch_prob)
